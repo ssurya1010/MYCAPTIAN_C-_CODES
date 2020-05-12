@@ -1,0 +1,35 @@
+//ANSWER 1
+
+#include <iostream>
+using namespace std;
+
+int main() 
+{    
+    cout << "Size of char: " << sizeof(char) << " byte" << endl;
+    cout << "Size of int: " << sizeof(int) << " bytes" << endl;
+    cout << "Size of float: " << sizeof(float) << " bytes" << endl;
+    cout << "Size of double: " << sizeof(double) << " bytes" << endl;
+
+    return 0;
+}
+
+//ANSWER 2
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    double x, y, productOfNumbers;
+    cout << "Enter two numbers: ";
+
+    // Stores both floating point numbers a and b respectively
+    cin >> x >> y;
+ 
+    // does the multiplication and stores the output (or) result in variable productOfNumbers
+    productOfNumbers = x * y;  
+
+    cout << "Product = " << productOfNumbers;    
+    
+    return 0;
+}
