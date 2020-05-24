@@ -1,0 +1,298 @@
+//***************************************************************
+// HEADER FILE USED IN PROJECT
+//***************************************************************
+#include<conio.h>
+#include<stdio.h>
+#include<fstream>
+#include<iostream>
+using namespace std;
+
+    //***************************************************************
+    // CLASS USED IN PROJECT
+    //****************************************************************
+
+    class record  
+    {
+        int pno;
+        char name[50],cou[50],las[50];
+        float fees,nums,tax;
+        public:
+            void create_record() 
+            {system("cls");
+                cout<<"\n\n\n************************************************************************************************************************";
+                 cout<< "\n\n\t\t\t\tCREATE RECORD OF NEW  STUDENT    /(^0^/)";
+                cout<< "\n\n\n\n\n\t\t\t\tPlease Enter The Student Admission Number : ";
+                cin>>pno;
+                cout<< "\n\t\t\t\tPlease Enter The Student Roll Number : ";
+                cin>>nums;
+				cout<< "\n\t\t\t\tPlease Enter The first Name of The Student : ";
+                cin>>name;                
+                cout<< "\n\t\t\t\tPlease Enter The last Name of The Student : ";
+                cin>> las;
+                cout<< "\n\t\t\t\tPlease Enter The course : ";
+                
+                cin>> cou;
+                cout<< "\n\t\t\t\tPlease Enter The fees of The student : ";
+                cin>> fees;
+				cout<<"\n\n\n\************************************************************************************************************************";             
+            }
+
+        void show_record() 
+        {system("cls");
+        cout<<"\n\n\n************************************************************************************************************************";
+            cout<< "\n\n\n\n\n\t\t\t\tThe Student Admission Number : " <<pno;
+            cout<< "\n\t\t\t\tThe Student Roll number Number : " <<nums;
+            cout<< "\n\t\t\t\tThe Name of The Student: "<<name;
+            cout<< "\n\t\t\t\tThe last Name of The Student : "<<las;
+            cout<< "\n\t\t\t\tThe fees of The student : " <<fees;
+            cout<<"\n\t\t\t\tcourse taken by student : "<<cou;
+            cout<<"\n\n\n************************************************************************************************************************";
+        }
+
+        int avipno() 
+        {
+            return pno;
+        }
+        
+        int avinums() 
+        {
+            return nums;
+        }
+
+        float avifees() 
+        {
+            return fees;
+        }
+
+        char * aviname() 
+        {
+            return name;
+        }
+        
+        char * avilas() 
+        {
+            return las;
+        }
+
+        char * avicou()
+		{
+			return cou;
+		}
+
+    }; //class ends here
+
+//****************************************************************
+// global declaration for stream object, object
+//****************************************************************
+
+fstream fp;
+record pr;
+//***************************************************************
+// function to write in file
+//****************************************************************
+
+void write_record() 
+{system("cls");
+    fp.open("record.dat", ios::out | ios::app);
+    pr.create_record();
+    fp.write((char * ) & pr, sizeof(record));
+    fp.close();
+    cout<< "\n\nThe record Has Been Created  /(^0^/) ";
+    getch();
+}
+
+//***************************************************************
+// function to read specific record from file
+//****************************************************************
+void display_sp(int n) 
+{system("cls");
+    int flag = 0;
+    fp.open("record.dat", ios:: in );
+    while (fp.read((char * ) & pr, sizeof(record))) 
+    {
+        if (pr.avipno() == n) 
+        {
+            system("cls");
+    
+            pr.show_record();
+            flag = 1;
+        }
+    }
+    fp.close();
+    if (flag == 0)
+        cout<< "\n\n record not exist";
+    getch();
+}
+//***************************************************************
+// function to modify record of file
+//****************************************************************
+void modify_record() 
+{
+    int no, found = 0;
+    system("cls");
+    cout<<"\n\n\n************************************************************************************************************************";
+    cout<< "\n\n\tTo Modify |!!( oAo )!!| ";
+    cout<< "\n\n\t Please Enter The Student Admission Number :- ";
+    cin>> no;
+    fp.open("record.dat", ios:: in | ios::out);
+    while (fp.read((char * ) & pr, sizeof(record)) && found == 0) 
+    {
+        if (pr.avipno() == no) 
+        {
+            pr.show_record();
+            cout<< " Please Enter The New Details of the student :- " << endl;
+            pr.create_record();
+            int pos = -1 * sizeof(pr);
+            fp.seekp(pos, ios::cur);
+            fp.write((char * ) & pr, sizeof(record));
+            cout<< "\n\n\t record Updated ";
+            found = 1;
+        }
+    }
+    fp.close();
+    if (found == 0)
+        cout<< "\n\n record Not Found ";
+        
+    cout<<"\n\n\n************************************************************************************************************************";
+      
+    getch();
+}
+//***************************************************************
+// function to delete record of file
+//****************************************************************
+void delete_record() 
+{
+    int no;
+    system("cls");
+    cout<<"\n\n\n************************************************************************************************************************";
+    cout<< "\n\n\n\tDelete record .(x_x). ";
+    cout<< "\n\n\tPlease Enter The Student Admission Number of student You Want To Delete :- ";
+    cin>> no;
+    fp.open("record.dat", ios:: in | ios::out);
+    fstream fp2;
+    fp2.open("Temp.dat", ios::out);
+    fp.seekg(0, ios::beg);
+    while (fp.read((char * ) & pr, sizeof(record))) 
+    {
+        if (pr.avipno() != no) 
+        {
+            fp2.write((char * ) & pr, sizeof(record));
+        }
+    }
+    fp2.close();
+    fp.close();
+    remove("record.dat");
+    rename("Temp.dat", "record.dat");
+    cout<< "\n\n\trecord Deleted .(x_x).";
+    cout<<"\n\n\n************************************************************************************************************************";
+    
+	getch();
+}
+//***************************************************************
+// function to display all records 
+//****************************************************************
+
+void menu() 
+{
+     system("cls");
+    fp.open("record.dat", ios:: in );
+    if (!fp) 
+    {
+        cout<< "\n\n\n\n\n\n\n\n\n\t\t\t\t\t ERROR!!! FILE COULD NOT BE OPEN \n\n\n\n\t\t\t\t\t THERE ARE NO recordS AVAILABLE RIGHT NOW ";
+        cout<< "\n\n\n\n\t\t\t\t\t Program is closing ....";
+        getch();
+        exit(0);
+    }
+
+    cout<< "\n\n\t\trecord MENU\n\n";
+    cout<< "========================================================================================================================\n";
+    cout<< "Admission Numbe    \t\tNAME    \t\tcourse    \t\tfees    \t\trollno\n";
+    cout<< "========================================================================================================================\n";
+
+   while (fp.read((char * ) & pr, sizeof(record))) 
+    {
+        cout<< pr.avipno() << "\t\t\t\t" << pr.aviname()<< " "<<pr.avilas() << "\t\t\t" << pr.avicou()<< "\t\t\t "<< pr.avifees()<< "\t\t\t "<< pr.avinums() << endl;
+    }
+    fp.close();
+}//***************************************************************
+// INTRODUCTION FUNCTION
+//****************************************************************
+
+void intro() 
+{ system("cls");
+
+    cout<<"\n\n\n\n\n________________________________________________________________________________________________________________________";
+	cout<< "\n\n\n\n\t\t\t\t\tSTUDENT ";
+    cout<< "DATABASE ";
+    cout<< "MANAGEMENT ";
+    cout<< "SYSTEM ";
+    cout<< "\n\n\n\t\t\t\t\tMADE BY : S SURYA ";
+    cout<<"\n\n\n\t\t\t\t\tSUBMITTED TO : CAPTAIN AADHAR ";
+    cout<< "\n\n\n\t\t\t\t\tCOURSE : C++ BY MYCAPTAIN ";
+    cout<<"\n\n\n\n\________________________________________________________________________________________________________________________";
+    getch();
+
+}
+
+//***************************************************************
+// THE MAIN FUNCTION OF PROGRAM
+//****************************************************************
+int main() 
+{
+    char ch;
+    intro();
+    do 
+    {
+     system("cls");
+        cout<<"\n\n\n************************************************************************************************************************";
+        cout<<"\n\n\n\t\t\t\t\tWELCOME TO MYCAPTAIN HIGH SCHOOL";
+        cout<< "\n\n\n\tMAIN MENU";
+        cout<< "\n\n\t1.ADD records       /(^0^/)";
+        cout<< "\n\n\t2.VIEW records      ¯(o_o)¯ ";
+        cout<< "\n\n\t3.EDIT records      |!!( oAo )!!|  ";
+        cout<< "\n\n\t4.SEARCH records    ¯_(-_-)_¯ ";
+        cout<< "\n\n\t5.DELETE records    (x_x) ";
+        cout<< "\n\n\t6. EXIT ";
+        cout<<"\n\n\n************************************************************************************************************************";
+        cout<< "\n\n\t\t\tPlease Select Your Option (1-6) ";
+        ch = getche();
+        switch (ch) 
+        {
+        case '1':
+        write_record();
+        break;
+        
+    case '4':
+        int num;
+        system("cls");
+        cout<<"\n\n\n************************************************************************************************************************";
+        cout<< "\n\n\tPlease Enter The record No. ";
+        cin>> num;
+        display_sp(num);
+        cout<<"\n\n\n************************************************************************************************************************";
+    
+        break;
+        
+    case '3':
+        modify_record();
+        break;
+        
+    case '5':
+        delete_record(); 
+        break;
+        
+    case '2':
+        menu();
+        getch();
+        break;
+        
+    case '6':
+            exit(0);
+	          cout<< " ";
+        }
+    } while (ch != '6');
+}
+
+//***************************************************************
+// END OF PROJECT
+//***************************************************************
