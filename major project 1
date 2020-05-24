@@ -1,0 +1,286 @@
+#include <conio.h>
+#include <cstdio>
+#include <iostream>
+#include <string.h>
+#include <cstdlib>
+ 
+using namespace std;
+ 
+//***************************************************************
+// INTRODUCTION FUNCTION
+//****************************************************************
+
+void intro() 
+{ system("cls");
+
+    cout<< "\n\n\n\n\n\n\n\n\n\t\t\t\t\tBUS ";
+    cout<< "RESERVATION ";
+    cout<<"SYSTEM ";
+    cout<< "\n\n\n\t\t\t\t\tMADE BY : S SURYA ";
+    cout<<"\n\n\n\t\t\t\t\tSUBMITTED TO : CAPTAIN AADHAR ";
+    cout<< "\n\n\n\t\t\t\t\tCOURSE : C++ BY MYCAPTAIN ";
+    getch();
+
+}
+
+static int p = 0;
+class Bus_Reservation
+{
+  char busn[10];
+  char driver[20];
+  char arrival[10];
+  char depart[10];
+  char from[20];
+  char to[20];
+  char seat[8][4][10];
+ 
+public:
+  void add_bus();
+  void reserve_bus();
+  void empty();
+  void show_bus();
+  void is_bus_available();
+  void position(int i);
+}
+ 
+bus[20];
+ 
+void Bus_Reservation::add_bus()
+{
+
+  cout<< "\n\n************************************************************************************************************************\n";
+	
+  cout<<"\n\n\t\t\t\t\t\tEnter bus number:- ";
+  cin>>bus[p].busn;
+ 
+  cout<<"\n\n\t\t\t\t\t\tEnter Driver's name:- ";
+  cin>>bus[p].driver;
+ 
+  cout<<"\n\n\t\t\t\t\t\tArrival time:- ";
+  cin>>bus[p].arrival;
+ 
+  cout<<"\n\n\t\t\t\t\t\tDeparture:- ";
+  cin>>bus[p].depart;
+ 
+  cout<<"\n\n\t\t\t\t\t\tFrom:- ";
+  cin>>bus[p].from;
+ 
+  cout<<"\n\n\t\t\t\t\t\tTo:- ";
+  cin>>bus[p].to;
+  
+  cout<< "\n\n*******************************************************THANK YOU****************************************************\n";
+     
+  cout<<"\n Added Successfully....";
+ 
+  bus[p].empty();
+  
+  p++;
+    
+  getch();
+ 
+}
+ 
+void Bus_Reservation::reserve_bus()
+{
+  int seat;
+  char number[5];
+  top:
+  cout<< "\n\n************************************************************************************************************************\n";
+  cout<<"\n\n\t\t\t\t\t\tBus number:- ";
+  cin>>number;
+  int n;
+  for(n=0;n<=p;n++)
+  {
+    if(strcmp(bus[n].busn, number)==0)
+    break;
+  }
+  while(n<=p)
+  {
+    cout<<"\n\n\t\t\t\t\t\tSeat Number:- ";
+    cin>>seat;
+    if(seat>32)
+    {
+      cout<<"\n\n\t\t\t\t\t\tThere are only 32 seats available in this bus.";
+    }
+    else
+    {
+      if (strcmp(bus[n].seat[seat/4][(seat%4)-1], "Empty")==0)
+      {
+        cout<<"\n\n\t\t\t\t\t\tEnter passanger's first name:- ";
+        cin>>bus[n].seat[seat/4][(seat%4)-1];
+        break;
+      }
+    else
+      cout<<"\n\n\t\t\t\t\t\tThe seat no. is already reserved.\n";
+      }
+      }
+    if(n>p)
+    {
+      cout<<"\n\n\t\t\t\t\t\tEnter correct bus no.\n";
+      goto top;
+    }
+    
+    cout<< "\n\n*******************************************************THANK YOU****************************************************\n";
+    
+    cout<<"\n Added Successfully....";  
+  	
+	getch();
+  }
+ 
+ 
+void Bus_Reservation::empty()
+{
+  for(int i=0; i<8;i++)
+  {
+    for(int j=0;j<4;j++)
+    {
+      strcpy(bus[p].seat[i][j], "Empty");
+    }
+  }
+}
+ 
+void Bus_Reservation::show_bus()
+{
+  cout<< "\n\n************************************************************************************************************************\n";
+  int n;
+  char number[5];
+  cout<<"\n\n\t\t\t\t\t\tEnter bus number:- ";
+  cin>>number;
+  for(n=0;n<=p;n++)
+  {
+    if(strcmp(bus[n].busn, number)==0)
+    break;
+  }
+  while(n<=p)
+  {
+  	cout<<"\n**********************************************************************************************************************\n";
+  	cout<<"Bus no:- "<<bus[n].busn
+  	<<"\tDriver:- "<<bus[n].driver<<"\tArrival time:- "
+  	<<bus[n].arrival<<"\t\tDeparture time:- "<<bus[n].depart
+  	<<"\tFrom:- "<<bus[n].from<<"\tTo:- "<<
+  	bus[n].to<<"\n";
+  	cout<<"**********************************************************************************************************************\n";
+  	bus[0].position(n);
+  
+  	int a=1;
+  	for (int i=0; i<8; i++)
+  	{
+    	for(int j=0;j<4;j++)
+    	{
+      	a++;
+      	if(strcmp(bus[n].seat[i][j],"Empty")!=0)
+      	cout<<"\nThe seat no "<<(a-1)<<" is reserved for "<<bus[n].seat[i][j]<<".";
+    	}
+  	}
+  	break;
+  	}
+  	if(n>p)
+  	{
+    	cout<<"Enter correct bus no:- ";
+    }
+    cout<< "\n\n************************************************************************************************************************\n";
+  	getch();
+}
+ 
+void Bus_Reservation::position(int l)
+{
+  int s=0;p=0;
+  for (int i =0; i<8;i++)
+  {
+    cout<<"\n";
+    for (int j = 0;j<4; j++)
+    {
+      s++;
+      if(strcmp(bus[l].seat[i][j], "Empty")==0)
+        {
+          cout.width(5);
+          cout.fill(' ');
+          cout<<s<<".";
+          cout.width(20);
+          cout.fill(' ');
+          cout<<bus[l].seat[i][j];
+          p++;
+        }
+        else
+        {
+        cout.width(5);
+        cout.fill(' ');
+        cout<<s<<".";
+        cout.width(20);
+        cout.fill(' ');
+        cout<<bus[l].seat[i][j];
+        }
+      }
+    }
+    cout<<"\n\nThere are "<<p<<" seats empty in Bus Number:- "<<bus[l].busn;
+  }
+ 
+void Bus_Reservation::is_bus_available()
+{
+  for(int n=0;n<p;n++)
+  {
+  		cout<<"\n**********************************************************************************************************************\n";
+    	cout<<"\tBus number:  "<<bus[n].busn<<"\t\t\t\t\tDriver:  "<<bus[n].driver
+    	<<"\n\n\tArrival time:"<<bus[n].arrival<<"\t\t\t\t\tDeparture Time:  "
+    	<<bus[n].depart<<"\n\n\tFrom:  "<<bus[n].from<<"\t\t\t\t\t\tTo:  "
+    	<<bus[n].to;
+    	cout<<"\n**********************************************************************************************************************\n";
+  }
+getch();
+}
+
+
+//***************************************************************
+// MAIN MENU OR FRONT PAGE 
+//***************************************************************
+ 
+int main() 
+{
+system("cls");
+intro();
+int w;
+while(1)
+{       
+        system("cls");
+        cout<<"\n************************************************************************************************************************\n";
+        cout<< "\n\n\t\t\t\t\t\tMAIN MENU";
+        cout<< "\n\n\n\t\t\t\t\t\t1.Add Bus";
+        cout<< "\n\n\n\t\t\t\t\t\t2.Reservation";
+        cout<< "\n\n\n\t\t\t\t\t\t3.Show Bus";
+        cout<< "\n\n\n\t\t\t\t\t\t4.Buses Available ";
+        cout<< "\n\n\n\t\t\t\t\t\t5. EXIT";        
+        cout<<"\n\n\n************************************************************************************************************************\n";
+        cout<< "\n\n\n\t\t\t\t\tPlease Select Your Option (1-5) ";
+		cin>>w;
+        switch(w) 
+        {
+        	case 1: 
+        	system("cls");
+		    bus[p].add_bus();
+			break;
+            
+			case 2:
+			system("cls");
+		    bus[p].reserve_bus();
+			break;
+            
+			case 3:
+			system("cls");  
+			bus[0].show_bus();
+            break;
+            
+			case 4: 
+			system("cls");
+			bus[0].is_bus_available();
+            break;
+            
+			case 5:  
+			exit(0);
+        }
+    } 
+}
+    
+
+//***************************************************************
+// END OF PROJECT
+//***************************************************************
