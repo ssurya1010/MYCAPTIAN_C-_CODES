@@ -250,7 +250,7 @@ int main()
         cout<< "\n\n\t1.ADD records       /(^0^/)";
         cout<< "\n\n\t2.VIEW records      ¯(o_o)¯ ";
         cout<< "\n\n\t3.EDIT records      |!!( oAo )!!|  ";
-        cout<< "\n\n\t4.SEARCH records    ¯_(-_-)_¯ ";
+        cout<< "\n\n\t4.SEARCH records    (_/¯-_-)_/¯ ";
         cout<< "\n\n\t5.DELETE records    (x_x) ";
         cout<< "\n\n\t6. EXIT ";
         cout<<"\n\n\n************************************************************************************************************************";
